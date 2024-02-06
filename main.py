@@ -1,5 +1,6 @@
 import os
 import subprocess
+import time
 
 from dotenv import find_dotenv, load_dotenv
 
@@ -23,9 +24,9 @@ def main():
     if not service_name or not src_path or not dst_path or not backups_quantity:
         raise CustomException('Missed some parameters!')
 
-    subprocess.run(['systemctl', f'stop {service_name}'])
-
-    subprocess.run(['systemctl', f'start {service_name}'])
+    subprocess.run(f'systemctl stop {service_name}')
+    time.sleep(10)
+    subprocess.run(f'systemctl start {service_name}')
 
 
 if __name__ == '__main__':
