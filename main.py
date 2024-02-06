@@ -19,9 +19,14 @@ def main():
     service_name = os.getenv('SERVICE_NAME')
     src_path = os.getenv('SRC_PATH')
     dst_path = os.getenv('DST_PATH')
-    backups_quantity = int(os.getenv('BACKUPS_QUANTITY'))
+    day_backs_quantity = int(os.getenv('DAY_BACKS_QUANTITY'))
+    hour_backs_quantity = int(os.getenv('HOUR_BACKS_QUANTITY'))
 
-    if not service_name or not src_path or not dst_path or not backups_quantity:
+    if (not service_name or
+            not src_path or
+            not dst_path or
+            not day_backs_quantity or
+            not hour_backs_quantity):
         raise CustomException('Missed some parameters!')
 
     print(f'Stopping {service_name}...')
