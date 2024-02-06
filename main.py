@@ -24,8 +24,10 @@ def main():
     if not service_name or not src_path or not dst_path or not backups_quantity:
         raise CustomException('Missed some parameters!')
 
+    print(f'Stopping {service_name}...')
     subprocess.run(f'systemctl stop {service_name}', shell=True)
     time.sleep(10)
+    print(f'Starting {service_name}...')
     subprocess.run(f'systemctl start {service_name}', shell=True)
 
 
