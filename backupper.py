@@ -36,7 +36,7 @@ def start_server(service_name: str) -> int:
 
 
 @logger()
-def clear_outdated_backups(considered_path: str | os.path, prefix, threshold_hours: int) -> dict:
+def clear_outdated_backups(considered_path: os.path, prefix, threshold_hours: int) -> dict:
     res = []
     for path, folder, files in os.walk(considered_path):
         for file in files:
