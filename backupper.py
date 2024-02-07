@@ -36,6 +36,19 @@ def start_server(service_name: str) -> int:
 
 
 @logger()
+def clear_outdated_backups(considered_path: str | os.path, prefix, threshold_hours: int) -> dict:
+    res = []
+    for path, folder, files in os.walk(considered_path):
+        for file in files:
+            if (prefix in file and
+                    (time.time() - os.path.getmtime(os.path.join(path, file)) > threshold_hours * 3600)):
+                full_path = os.path.join(path, file)
+                os.remove(full_path)
+                res.append(str(full_path))
+    return {f'Deleted: {len(res)}': res}
+
+
+@logger()
 def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str, server_name: str) -> int:
     stop_server(service_name, server_name)
 
@@ -49,8 +62,7 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
     return out.returncode
 
 
-@logger()
-def backupper_core(cfg) -> list:
+def backupper_core(cfg) -> None:
     results = []
     server_name = cfg['SERVER_NAME']
 
@@ -65,8 +77,7 @@ def backupper_core(cfg) -> list:
             os.mkdir(path)
 
     arch_prefix = server_name
-    hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL'])*3600
-
+    hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL_HOURS']) * 3600
     if is_need_do_backup(daily_path, arch_prefix, 86400):
         # DO DAY BACKUP
         do_backup(cfg['SRC_PATH'],
@@ -94,6 +105,7 @@ def backupper_core(cfg) -> list:
 
     if was_backed_now:
         # DO CLEARINGS
-        pass
-
-    return results
+        results.append(clear_outdated_backups(daily_path, arch_prefix, cfg['DAILY_BACKS_THRESH_HOURS']))
+        results.append(clear_outdated_backups(hourly_path, arch_prefix, cfg['HOURLY_BACKS_THRESH_HOURS']))
+    else:
+        results.append('No clearing tries.')
