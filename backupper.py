@@ -6,7 +6,7 @@ import time
 from utils import CustomException, logger
 
 
-@logger
+@logger()
 def is_need_do_backup(considered_path: os.path, prefix: str, period: int) -> bool:
     for path, folder, files in os.walk(considered_path):
         for file in files:
@@ -16,7 +16,7 @@ def is_need_do_backup(considered_path: os.path, prefix: str, period: int) -> boo
     return True
 
 
-@logger
+@logger()
 def stop_server(service_name: str, server_name: str) -> None:
     print('Countdown 40 secs...')
     msg_cmd = f'su -l minecraft -s /bin/bash /opt/minecraft/say_restart.sh {server_name}'
@@ -26,7 +26,7 @@ def stop_server(service_name: str, server_name: str) -> None:
     subprocess.run(f'systemctl stop {service_name}', shell=True)
 
 
-@logger
+@logger()
 def start_server(service_name: str) -> int:
     print('Countdown 4 secs...')
     time.sleep(4)
@@ -35,7 +35,7 @@ def start_server(service_name: str) -> int:
     return out.returncode
 
 
-@logger
+@logger()
 def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str, server_name: str) -> int:
     stop_server(service_name, server_name)
 
@@ -49,7 +49,7 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
     return out.returncode
 
 
-@logger
+@logger()
 def backupper_core(cfg) -> list:
     results = []
     server_name = cfg['SERVER_NAME']

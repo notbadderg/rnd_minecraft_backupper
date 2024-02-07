@@ -31,7 +31,7 @@ def get_config() -> dict:
     return cfg_
 
 
-@logger
+@logger()
 def main():
 
     cfg = get_config()
