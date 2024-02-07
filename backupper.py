@@ -63,7 +63,7 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
 
 
 @logger()
-def backupper_core(cfg) -> None:
+def backupper_core(cfg) -> list:
     results = []
     server_name = cfg['SERVER_NAME']
 
@@ -110,3 +110,5 @@ def backupper_core(cfg) -> None:
         results.append(clear_outdated_backups(hourly_path, arch_prefix, cfg['HOURLY_BACKS_THRESH_HOURS']))
     else:
         results.append('No clearing tries.')
+
+    return results
