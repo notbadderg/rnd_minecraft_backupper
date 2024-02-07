@@ -17,7 +17,7 @@ def is_need_do_backup(considered_path: os.path, prefix: str, period: int) -> boo
 
 def stop_server(service_name: str, server_name: str) -> None:
     print('Countdown 60 secs...')
-    msg_cmd = (f'su -l minecraft /usr/bin/screen -p 0 mc-{server_name} -X eval ' +
+    msg_cmd = (f'"su -l minecraft -s" /usr/bin/screen -p 0 -S mc-{server_name} -X eval ' +
                'stuff "say SERVER RESTARTING FOR BACKING IN 60 SECONDS."\015')
     subprocess.run(msg_cmd, shell=True)
     time.sleep(60)
