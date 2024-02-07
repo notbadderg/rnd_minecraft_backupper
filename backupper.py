@@ -104,7 +104,6 @@ def backupper_core(cfg) -> list:
         results.append('Nothing to backing.')
         was_backed_now = False
 
-    was_backed_now = True
     if was_backed_now:
         # DO CLEARINGS
         results.append(clear_outdated_backups(daily_path, arch_prefix, int(cfg['DAILY_BACKS_THRESH_HOURS'])))
