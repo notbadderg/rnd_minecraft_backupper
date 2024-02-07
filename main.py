@@ -1,41 +1,39 @@
 import os
-import subprocess
-import time
-
 from dotenv import find_dotenv, load_dotenv
 
+from backupper import backupper_core
+from utils import CustomException
 
-class CustomException(Exception):
-    pass
 
+def get_config() -> dict:
+    load_dotenv(find_dotenv())
 
-def backupper(src_path_raw, dst_path_raw, backups_quantity):
-    pass
+    params_ = [
+        'SERVICE_NAME',
+        'SERVER_NAME',
+
+        'SRC_PATH',
+        'DST_PATH',
+        'EXCLUDE_TXT_PATH',
+
+        'DAILY_BACKS_QUANTITY',
+        'HOURLY_BACKS_QUANTITY',
+        'HOURLY_BACKS_INTERVAL',
+    ]
+
+    cfg_ = {}
+    for param in params_:
+        value = os.getenv(param)
+        if not value:
+            raise CustomException(f'Missed {value}')
+        cfg_[param] = value
+
+    return cfg_
 
 
 def main():
-    load_dotenv(find_dotenv())
-
-    service_name = os.getenv('SERVICE_NAME')
-    src_path = os.getenv('SRC_PATH')
-    dst_path = os.getenv('DST_PATH')
-    day_backs_quantity = int(os.getenv('DAY_BACKS_QUANTITY'))
-    hour_backs_quantity = int(os.getenv('HOUR_BACKS_QUANTITY'))
-    exclude = os.getenv('EXCLUDE').split(',')
-
-    if (not service_name or
-            not src_path or
-            not dst_path or
-            not day_backs_quantity or
-            not hour_backs_quantity or
-            not exclude):
-        raise CustomException('Missed some parameters!')
-
-    print(f'Stopping {service_name}...')
-    subprocess.run(f'systemctl stop {service_name}', shell=True)
-    time.sleep(10)
-    print(f'Starting {service_name}...')
-    subprocess.run(f'systemctl start {service_name}', shell=True)
+    cfg = get_config()
+    backupper_core(cfg)
 
 
 if __name__ == '__main__':
