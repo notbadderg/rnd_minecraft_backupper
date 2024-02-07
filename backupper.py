@@ -45,7 +45,7 @@ def clear_outdated_backups(considered_path: os.path, prefix, threshold_hours: in
                 full_path = os.path.join(path, file)
                 os.remove(full_path)
                 res.append(str(full_path))
-    return {f'Deleted: {len(res)}': res}
+    return {f'Deleted in {considered_path}: {len(res)}': res}
 
 
 @logger()
