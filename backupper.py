@@ -81,6 +81,7 @@ def backupper_core(cfg) -> None:
         was_backed_now = True
 
     else:
+        print('Nothing to backing.')
         was_backed_now = False
 
     if was_backed_now:
