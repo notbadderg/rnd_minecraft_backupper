@@ -45,23 +45,25 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
 
 
 def backupper_core(cfg) -> None:
+    server_name = cfg['SERVER_NAME']
 
-    dst_path = cfg['DST_PATH']
-    daily_path = os.path.join(dst_path, 'daily')
-    hourly_path = os.path.join(dst_path, 'hourly')
+    backups_path = cfg['BACKUPS_PATH']
+    current_server_backups_path = os.path.join(backups_path, server_name)
+    daily_path = os.path.join(str(current_server_backups_path), 'daily')
+    hourly_path = os.path.join(str(current_server_backups_path), 'hourly')
 
     # check or create backup paths
-    for path in [dst_path, daily_path, hourly_path]:
+    for path in [backups_path, current_server_backups_path, daily_path, hourly_path]:
         if not os.path.exists(path):
             os.mkdir(path)
 
-    arch_prefix = cfg['SERVER_NAME']
+    arch_prefix = server_name
     hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL'])*3600
 
     if is_need_do_backup(daily_path, arch_prefix, 86400):
         # DO DAY BACKUP
         do_backup(cfg['SRC_PATH'],
-                  daily_path,
+                  str(daily_path),
                   cfg['EXCLUDE_TXT_PATH'],
                   arch_prefix,
                   cfg['SERVICE_NAME'],
@@ -72,7 +74,7 @@ def backupper_core(cfg) -> None:
           is_need_do_backup(hourly_path, arch_prefix, hourly_backs_period)):
         # DO HOUR BACKUP
         do_backup(cfg['SRC_PATH'],
-                  hourly_path,
+                  str(hourly_path),
                   cfg['EXCLUDE_TXT_PATH'],
                   arch_prefix,
                   cfg['SERVICE_NAME'],

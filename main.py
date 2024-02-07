@@ -13,7 +13,7 @@ def get_config() -> dict:
         'SERVER_NAME',
 
         'SRC_PATH',
-        'DST_PATH',
+        'BACKUPS_PATH',
         'EXCLUDE_TXT_PATH',
 
         'DAILY_BACKS_QUANTITY',
