@@ -3,9 +3,10 @@ import os
 import subprocess
 import time
 
-from utils import CustomException
+from utils import CustomException, logger
 
 
+@logger
 def is_need_do_backup(considered_path: os.path, prefix: str, period: int) -> bool:
     for path, folder, files in os.walk(considered_path):
         for file in files:
@@ -15,6 +16,7 @@ def is_need_do_backup(considered_path: os.path, prefix: str, period: int) -> boo
     return True
 
 
+@logger
 def stop_server(service_name: str, server_name: str) -> None:
     print('Countdown 40 secs...')
     msg_cmd = f'su -l minecraft -s /bin/bash /opt/minecraft/say_restart.sh {server_name}'
@@ -24,14 +26,17 @@ def stop_server(service_name: str, server_name: str) -> None:
     subprocess.run(f'systemctl stop {service_name}', shell=True)
 
 
-def start_server(service_name: str) -> None:
+@logger
+def start_server(service_name: str) -> int:
     print('Countdown 4 secs...')
     time.sleep(4)
     print(f'Starting {service_name}...')
-    subprocess.run(f'systemctl start {service_name}', shell=True)
+    out = subprocess.run(f'systemctl start {service_name}', shell=True)
+    return out.returncode
 
 
-def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str, server_name: str) -> None:
+@logger
+def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str, server_name: str) -> int:
     stop_server(service_name, server_name)
 
     arch_path_name = f'{dst}/{prefix}_{datetime.datetime.now():%Y-%m-%d_%H-%M-%S-%f}.7z'
@@ -41,9 +46,12 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
         raise CustomException(f'do_backup error code {out.returncode}')
 
     start_server(service_name)
+    return out.returncode
 
 
-def backupper_core(cfg) -> None:
+@logger
+def backupper_core(cfg) -> list:
+    results = []
     server_name = cfg['SERVER_NAME']
 
     backups_path = cfg['BACKUPS_PATH']
@@ -81,9 +89,11 @@ def backupper_core(cfg) -> None:
         was_backed_now = True
 
     else:
-        print('Nothing to backing.')
+        results.append('Nothing to backing.')
         was_backed_now = False
 
     if was_backed_now:
         # DO CLEARINGS
         pass
+
+    return results

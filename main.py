@@ -2,7 +2,7 @@ import os
 from dotenv import find_dotenv, load_dotenv
 
 from backupper import backupper_core
-from utils import CustomException
+from utils import CustomException, logger
 
 
 def get_config() -> dict:
@@ -31,7 +31,9 @@ def get_config() -> dict:
     return cfg_
 
 
+@logger
 def main():
+
     cfg = get_config()
     backupper_core(cfg)
 
