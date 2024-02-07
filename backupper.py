@@ -62,6 +62,7 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
     return out.returncode
 
 
+@logger()
 def backupper_core(cfg) -> None:
     results = []
     server_name = cfg['SERVER_NAME']
