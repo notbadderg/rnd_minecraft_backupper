@@ -19,14 +19,14 @@ def stop_server(service_name: str, server_name: str) -> None:
     print('Countdown 60 secs...')
     msg_cmd = f'su -l minecraft -s /bin/bash /opt/minecraft/say_restart.sh {server_name}'
     subprocess.run(msg_cmd, shell=True)
-    time.sleep(60)
+    time.sleep(40)
     print(f'Stopping {service_name}...')
     subprocess.run(f'systemctl stop {service_name}', shell=True)
 
 
 def start_server(service_name: str) -> None:
-    print('Countdown 10 secs...')
-    time.sleep(10)
+    print('Countdown 4 secs...')
+    time.sleep(4)
     print(f'Starting {service_name}...')
     subprocess.run(f'systemctl start {service_name}', shell=True)
 
