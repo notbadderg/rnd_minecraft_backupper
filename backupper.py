@@ -78,8 +78,9 @@ def backupper_core(cfg) -> list:
             os.mkdir(path)
 
     arch_prefix = server_name
-    hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL_HOURS']) * 3600 - int(cfg['HOURLY_BACKS_TRIM_SECS'])
-    if is_need_do_backup(daily_path, arch_prefix, 86400):
+    backs_trim = int(cfg['BACKS_TRIM_SECS'])
+    hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL_HOURS']) * 3600 - backs_trim
+    if is_need_do_backup(daily_path, arch_prefix, 86400 - backs_trim):
         # DO DAY BACKUP
         do_backup(cfg['SRC_PATH'],
                   str(daily_path),
