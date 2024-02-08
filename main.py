@@ -20,7 +20,6 @@ def get_config() -> dict:
         'HOURLY_BACKS_KEEP_HOURS',
 
         'HOURLY_BACKS_INTERVAL_HOURS',
-        'BACKS_TRIM_SECS'
     ]
 
     cfg_ = {}
