@@ -78,7 +78,7 @@ def backupper_core(cfg) -> list:
             os.mkdir(path)
 
     arch_prefix = server_name
-    hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL_HOURS']) * 3600
+    hourly_backs_period = int(cfg['HOURLY_BACKS_INTERVAL_HOURS']) * 3600 - int(cfg['HOURLY_BACKS_TRIM_SECS'])
     if is_need_do_backup(daily_path, arch_prefix, 86400):
         # DO DAY BACKUP
         do_backup(cfg['SRC_PATH'],
@@ -106,8 +106,8 @@ def backupper_core(cfg) -> list:
 
     if was_backed_now:
         # DO CLEARINGS
-        results.append(clear_outdated_backups(daily_path, arch_prefix, int(cfg['DAILY_BACKS_THRESH_HOURS'])))
-        results.append(clear_outdated_backups(hourly_path, arch_prefix, int(cfg['HOURLY_BACKS_THRESH_HOURS'])))
+        results.append(clear_outdated_backups(daily_path, arch_prefix, int(cfg['DAILY_BACKS_KEEP_HOURS'])))
+        results.append(clear_outdated_backups(hourly_path, arch_prefix, int(cfg['HOURLY_BACKS_KEEP_HOURS'])))
     else:
         results.append('No clearing tries.')
 

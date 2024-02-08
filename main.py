@@ -16,9 +16,11 @@ def get_config() -> dict:
         'BACKUPS_PATH',
         'EXCLUDE_TXT_PATH',
 
-        'DAILY_BACKS_THRESH_HOURS',
-        'HOURLY_BACKS_THRESH_HOURS',
+        'DAILY_BACKS_KEEP_HOURS',
+        'HOURLY_BACKS_KEEP_HOURS',
+
         'HOURLY_BACKS_INTERVAL_HOURS',
+        'HOURLY_BACKS_TRIM_SECS'
     ]
 
     cfg_ = {}
