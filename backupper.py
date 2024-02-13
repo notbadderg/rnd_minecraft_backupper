@@ -96,6 +96,7 @@ def backupper_core(cfg) -> list:
         do_backup(cfg['SRC_PATH'],
                   str(hourly_path),
                   cfg['EXCLUDE_TXT_PATH'],
+                  int(cfg['COMPRESSION_LEVEL']),
                   arch_prefix,
                   cfg['SERVICE_NAME'],
                   cfg['SERVER_NAME'])
