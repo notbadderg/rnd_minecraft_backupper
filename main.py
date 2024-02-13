@@ -16,6 +16,7 @@ def get_config() -> dict:
         'BACKUPS_PATH',
         'EXCLUDE_TXT_PATH',
 
+        'DAILY_BACKS_ENABLE',
         'DAILY_BACKS_KEEP_HOURS',
         'HOURLY_BACKS_KEEP_HOURS',
 
