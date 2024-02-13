@@ -49,11 +49,11 @@ def clear_outdated_backups(considered_path: os.path, prefix, threshold_hours: in
 
 
 @logger()
-def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str, server_name: str) -> int:
+def do_backup(src: str, dst: str, exc_path: str, mx: int, prefix: str, service_name: str, server_name: str) -> int:
     stop_server(service_name, server_name)
     time.sleep(10)
     arch_path_name = f'{dst}/{prefix}_{datetime.datetime.now():%Y-%m-%d_%H-%M-%S-%f}.7z'
-    arch_cmd = f'7z a -xr@{exc_path} -mx5 {arch_path_name} {src}'
+    arch_cmd = f'7z a -xr@{exc_path} -mx{mx} {arch_path_name} {src}'
     out = subprocess.run(arch_cmd, shell=True)
     if out.returncode != 0:
         raise CustomException(f'do_backup error code {out.returncode}')
@@ -84,6 +84,7 @@ def backupper_core(cfg) -> list:
         do_backup(cfg['SRC_PATH'],
                   str(daily_path),
                   cfg['EXCLUDE_TXT_PATH'],
+                  int(cfg['COMPRESSION_LEVEL']),
                   arch_prefix,
                   cfg['SERVICE_NAME'],
                   cfg['SERVER_NAME'])

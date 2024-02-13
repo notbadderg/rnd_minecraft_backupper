@@ -15,6 +15,7 @@ def get_config() -> dict:
         'SRC_PATH',
         'BACKUPS_PATH',
         'EXCLUDE_TXT_PATH',
+        'COMPRESSION_LEVEL',
 
         'DAILY_BACKS_ENABLE',
         'DAILY_BACKS_KEEP_HOURS',
