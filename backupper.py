@@ -53,7 +53,7 @@ def do_backup(src: str, dst: str, exc_path: str, prefix: str, service_name: str,
     stop_server(service_name, server_name)
     time.sleep(10)
     arch_path_name = f'{dst}/{prefix}_{datetime.datetime.now():%Y-%m-%d_%H-%M-%S-%f}.7z'
-    arch_cmd = f'7z a -xr@{exc_path} -mx9 {arch_path_name} {src}'
+    arch_cmd = f'7z a -xr@{exc_path} -mx5 {arch_path_name} {src}'
     out = subprocess.run(arch_cmd, shell=True)
     if out.returncode != 0:
         raise CustomException(f'do_backup error code {out.returncode}')
