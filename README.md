@@ -1,8 +1,7 @@
 # rnd_minecraft_backupper
 
-testing now
+Minecraft server backupper.
 
 ### prerequisites:
 - linux
 - 7zip
-- baw
